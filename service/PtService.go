@@ -56,7 +56,7 @@ func Register(stub shim.ChaincodeStubInterface, param module.RegisterParam) pb.R
 	//保存产品所属信息
 	var productOwner = module.ProductOwner{}
 	productOwner.PreOwner = common.SYSTEM
-	productOwner.CurrentOwner = getMspid(stub)
+	productOwner.CurrentOwner = common.FARM
 	jsonByte, err = json.Marshal(productOwner)
 	if err != nil {
 		return shim.Error("Mashal productOwner error" + err.Error())
@@ -122,7 +122,7 @@ func BatchRegister(stub shim.ChaincodeStubInterface, param []module.RegisterPara
 		//保存产品所属信息
 		var productOwner = module.ProductOwner{}
 		productOwner.PreOwner = common.SYSTEM
-		productOwner.CurrentOwner = getMspid(stub)
+		productOwner.CurrentOwner = common.FARM
 		jsonByte, err = json.Marshal(productOwner)
 		if err != nil {
 			errinfo := module.RegisterErr{}
@@ -251,7 +251,7 @@ func ChangeOwner(stub shim.ChaincodeStubInterface, param module.ChangeOrgParam) 
 	var txInfoAdd = module.TxInfoAdd{}
 	txInfoAdd.MapPosition = productOwner.CurrentOwner
 	txInfoAdd.Operation = "ChangeOwner"
-	txInfoAdd.Operator = getMspid(stub)
+	txInfoAdd.Operator = common.FARM
 
 	txInfoAdd.OperateTime = time.Now().Format("2006-01-02T15:04:05Z07:00")
 
@@ -291,7 +291,7 @@ func ConfirmChangeOwner(stub shim.ChaincodeStubInterface, param module.ComfirmCh
 	var txInfoAdd = module.TxInfoAdd{}
 	txInfoAdd.MapPosition = changeOwner.After.CurrentOwner
 	txInfoAdd.Operation = "ConfirmChange"
-	txInfoAdd.Operator = getMspid(stub)
+	txInfoAdd.Operator = common.FARM
 
 	txInfoAdd.OperateTime = time.Now().Format("2006-01-02T15:04:05Z07:00")
 
@@ -314,7 +314,7 @@ func ConfirmChangeOwner(stub shim.ChaincodeStubInterface, param module.ComfirmCh
 	}
 
 	product.PreOwner = product.CurrentOwner
-	product.CurrentOwner = getMspid(stub)
+	product.CurrentOwner = common.FARM
 
 	jsonByte, err = json.Marshal(product)
 	if err != nil {
@@ -354,7 +354,7 @@ func DestroyProduct(stub shim.ChaincodeStubInterface, param module.DestroyParam)
 	var txInfoAdd = module.TxInfoAdd{}
 	txInfoAdd.MapPosition = productOwner.CurrentOwner
 	txInfoAdd.Operation = "Destroy"
-	txInfoAdd.Operator = getMspid(stub)
+	txInfoAdd.Operator = common.FARM
 
 	txInfoAdd.OperateTime = time.Now().Format("2006-01-02T15:04:05Z07:00")
 

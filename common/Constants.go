@@ -6,7 +6,7 @@ const (
 	//未确认
 	UNCOMFIRM = "UNCONFIRM"
 	//产品注册所属
-	SYSTEM = "SYSTEM"
+	SYSTEM = "None"
 	//产品所属KEY
 	PRODUCT_OWNER = "PRODUCT_OWNER"
 	//交易类型（产品注册）
@@ -24,6 +24,8 @@ const (
 	//产品ID
 	PRODUCT_ID = "productId"
 
+	// FARM
+	FARM = "Farm"
 	// error 类型和描述
 	ERROR_CODE_EXIST    = "001"
 	ERROR_MSG_EXIST     = "Asset has registered,please check the asset No."
