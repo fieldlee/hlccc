@@ -234,7 +234,7 @@ func ChangeOwner(stub shim.ChaincodeStubInterface, param module.ChangeOrgParam) 
 		return shim.Error("get productOwner error" + err.Error())
 	}
 	//验证交易发起方是否有权限
-	if getMspid(stub) != productOwner.CurrentOwner {
+	if common.FARM != productOwner.CurrentOwner {
 		return shim.Error("tx sender has no auth to change owner")
 	}
 	//更改产品权属信息&记录交易详情
@@ -337,7 +337,7 @@ func DestroyProduct(stub shim.ChaincodeStubInterface, param module.DestroyParam)
 		return shim.Error("get productOwner error" + err.Error())
 	}
 	//验证交易发起方是否有权限
-	if getMspid(stub) != productOwner.CurrentOwner {
+	if common.FARM != productOwner.CurrentOwner {
 		return shim.Error("tx sender has no auth to confirm change owner")
 	}
 	//销毁产品&记录交易详情
@@ -377,7 +377,7 @@ func ChangeProductInfo(stub shim.ChaincodeStubInterface, param map[string]interf
 		return shim.Error("get productOwner error" + err.Error())
 	}
 	// 验证交易发起方是否有权限
-	if getMspid(stub) != productOwner.CurrentOwner {
+	if common.FARM != productOwner.CurrentOwner {
 		return shim.Error("tx sender has no auth to change productInfo")
 	}
 	// 更改产品详细信息&记录交易详情
@@ -393,7 +393,7 @@ func ChangeProductInfo(stub shim.ChaincodeStubInterface, param map[string]interf
 	txInfoAdd.MapPosition = productInfo.MapPosition
 	txInfoAdd.Operation = productInfo.Operation
 
-	txInfoAdd.Operator = getMspid(stub)
+	txInfoAdd.Operator = common.FARM
 	txInfoAdd.OperateTime = time.Now().Format("2006-01-02T15:04:05Z07:00")
 
 	err = putTxId(stub, productId, productOwner, common.CHANGE_PRODUCT, txInfoAdd)
