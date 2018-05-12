@@ -72,7 +72,7 @@ func Register(stub shim.ChaincodeStubInterface, param module.RegisterParam) pb.R
 	txInfoAdd.Operation = product.Operation
 	txInfoAdd.Operator = product.Operator
 
-	txInfoAdd.OperateTime = time.Now()
+	txInfoAdd.OperateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	err = putTxId(stub, param.ProductId, productOwner, common.REGISTER, txInfoAdd)
 	if err != nil {
@@ -148,7 +148,7 @@ func BatchRegister(stub shim.ChaincodeStubInterface, param []module.RegisterPara
 		txInfoAdd.Operation = product.Operation
 		txInfoAdd.Operator = product.Operator
 
-		txInfoAdd.OperateTime = time.Now()
+		txInfoAdd.OperateTime = time.Now().Format("2006-01-02 15:04:05")
 		log.Logger.Info("#################批量入拦操作###############")
 		log.Logger.Info(product)
 		log.Logger.Info(product.ProductId)
@@ -265,7 +265,7 @@ func ChangeOwner(stub shim.ChaincodeStubInterface, param module.ChangeOrgParam) 
 	txInfoAdd.Operation = "ChangeOwner"
 	txInfoAdd.Operator = product.Operator
 
-	txInfoAdd.OperateTime = time.Now()
+	txInfoAdd.OperateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	err = putTxId(stub, param.ProductId, changeOwner.After, common.CHANGE_OWNER, txInfoAdd)
 	if err != nil {
@@ -318,7 +318,7 @@ func ConfirmChangeOwner(stub shim.ChaincodeStubInterface, param module.ComfirmCh
 	txInfoAdd.Operation = "ConfirmChange"
 	txInfoAdd.Operator = product.Operator
 
-	txInfoAdd.OperateTime = time.Now()
+	txInfoAdd.OperateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	err = putTxId(stub, param.ProductId, changeOwner.After, common.CONFIRM_CHANGE_OWNER, txInfoAdd)
 	if err != nil {
@@ -394,7 +394,7 @@ func DestroyProduct(stub shim.ChaincodeStubInterface, param module.DestroyParam)
 	txInfoAdd.Operation = "Destroy"
 	txInfoAdd.Operator = product.Operator
 
-	txInfoAdd.OperateTime = time.Now()
+	txInfoAdd.OperateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	err = putTxId(stub, param.ProductId, changeOwner.After, common.DESTROY, txInfoAdd)
 	if err != nil {
@@ -445,7 +445,7 @@ func ChangeProductInfo(stub shim.ChaincodeStubInterface, param map[string]interf
 	txInfoAdd.Operation = productInfo.Operation
 
 	txInfoAdd.Operator = common.FARM
-	txInfoAdd.OperateTime = time.Now()
+	txInfoAdd.OperateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	err = putTxId(stub, productId, productOwner, common.CHANGE_PRODUCT, txInfoAdd)
 	if err != nil {
