@@ -418,7 +418,7 @@ func ChangeProductInfo(stub shim.ChaincodeStubInterface, param map[string]interf
 
 	/** 获得资产 **/
 	product := module.ProductInfo{}
-	productAsset , err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	productAsset , err := stub.GetState(common.PRODUCT_INFO + common.ULINE + productId)
 	if err != nil {
 		return shim.Error("get tx info error" + err.Error())
 	}
