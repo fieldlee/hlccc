@@ -255,7 +255,7 @@ func ChangeOwner(stub shim.ChaincodeStubInterface, param module.ChangeOrgParam) 
 	if err != nil {
 		return shim.Error("get tx info error" + err.Error())
 	}
-	err = json.Unmarshal(result.Value, &product)
+	err = json.Unmarshal(productAsset, &product)
 	if err != nil {
 		return shim.Error("get tx info error" + err.Error())
 	}
@@ -302,14 +302,16 @@ func ConfirmChangeOwner(stub shim.ChaincodeStubInterface, param module.ComfirmCh
 
 
 	/** 获得资产 **/
+	/** 更改前后所属 **/
 	product := module.ProductInfo{}
-	productAsset , err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	jsonByte, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
-		return shim.Error("get tx info error" + err.Error())
+		return shim.Error("Put productInfo error" + err.Error())
 	}
-	err = json.Unmarshal(result.Value, &product)
+
+	err = json.Unmarshal(jsonByte, &product)
 	if err != nil {
-		return shim.Error("get tx info error" + err.Error())
+		return shim.Error("Unmarshal JSON error" + err.Error())
 	}
 
 	//更新产品交易列表信息
@@ -325,18 +327,7 @@ func ConfirmChangeOwner(stub shim.ChaincodeStubInterface, param module.ComfirmCh
 		return shim.Error("Put TxList error" + err.Error())
 	}
 
-	/** 更改前后所属 **/
-	product := module.ProductInfo{}
-
-	jsonByte, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
-	if err != nil {
-		return shim.Error("Put productInfo error" + err.Error())
-	}
-
-	err = json.Unmarshal(jsonByte, &product)
-	if err != nil {
-		return shim.Error("Unmarshal JSON error" + err.Error())
-	}
+	
 
 	product.PreOwner = product.CurrentOwner
 	product.CurrentOwner = common.FARM
@@ -383,7 +374,7 @@ func DestroyProduct(stub shim.ChaincodeStubInterface, param module.DestroyParam)
 	if err != nil {
 		return shim.Error("get tx info error" + err.Error())
 	}
-	err = json.Unmarshal(result.Value, &product)
+	err = json.Unmarshal(productAsset, &product)
 	if err != nil {
 		return shim.Error("get tx info error" + err.Error())
 	}
@@ -431,7 +422,7 @@ func ChangeProductInfo(stub shim.ChaincodeStubInterface, param map[string]interf
 	if err != nil {
 		return shim.Error("get tx info error" + err.Error())
 	}
-	err = json.Unmarshal(result.Value, &product)
+	err = json.Unmarshal(productAsset, &product)
 	if err != nil {
 		return shim.Error("get tx info error" + err.Error())
 	}
@@ -444,7 +435,7 @@ func ChangeProductInfo(stub shim.ChaincodeStubInterface, param map[string]interf
 	txInfoAdd.MapPosition = productInfo.MapPosition
 	txInfoAdd.Operation = productInfo.Operation
 
-	txInfoAdd.Operator = common.FARM
+	txInfoAdd.Operator = product.Operator
 	txInfoAdd.OperateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	err = putTxId(stub, productId, productOwner, common.CHANGE_PRODUCT, txInfoAdd)
