@@ -247,11 +247,23 @@ func ChangeOwner(stub shim.ChaincodeStubInterface, param module.ChangeOrgParam) 
 	if err != nil {
 		return shim.Error("change product owner error" + err.Error())
 	}
+
+
+	/** 获得资产 **/
+	product := module.ProductInfo{}
+	productAsset , err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
+	err = json.Unmarshal(result.Value, &product)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
 	//更新产品交易列表信息
 	var txInfoAdd = module.TxInfoAdd{}
 	txInfoAdd.MapPosition = productOwner.CurrentOwner
 	txInfoAdd.Operation = "ChangeOwner"
-	txInfoAdd.Operator = common.FARM
+	txInfoAdd.Operator = product.Operator
 
 	txInfoAdd.OperateTime = time.Now()
 
@@ -287,11 +299,24 @@ func ConfirmChangeOwner(stub shim.ChaincodeStubInterface, param module.ComfirmCh
 	if err != nil {
 		return shim.Error("change product owner error" + err.Error())
 	}
+
+
+	/** 获得资产 **/
+	product := module.ProductInfo{}
+	productAsset , err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
+	err = json.Unmarshal(result.Value, &product)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
+
 	//更新产品交易列表信息
 	var txInfoAdd = module.TxInfoAdd{}
 	txInfoAdd.MapPosition = changeOwner.After.CurrentOwner
 	txInfoAdd.Operation = "ConfirmChange"
-	txInfoAdd.Operator = common.FARM
+	txInfoAdd.Operator = product.Operator
 
 	txInfoAdd.OperateTime = time.Now()
 
@@ -350,11 +375,24 @@ func DestroyProduct(stub shim.ChaincodeStubInterface, param module.DestroyParam)
 	if err != nil {
 		return shim.Error("change product owner error" + err.Error())
 	}
+
+
+	/** 获得资产 **/
+	product := module.ProductInfo{}
+	productAsset , err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
+	err = json.Unmarshal(result.Value, &product)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
+
 	//更新产品交易列表信息
 	var txInfoAdd = module.TxInfoAdd{}
 	txInfoAdd.MapPosition = productOwner.CurrentOwner
 	txInfoAdd.Operation = "Destroy"
-	txInfoAdd.Operator = common.FARM
+	txInfoAdd.Operator = product.Operator
 
 	txInfoAdd.OperateTime = time.Now()
 
@@ -385,6 +423,19 @@ func ChangeProductInfo(stub shim.ChaincodeStubInterface, param map[string]interf
 	if err != nil {
 		return shim.Error("change productInfo error" + err.Error())
 	}
+
+
+	/** 获得资产 **/
+	product := module.ProductInfo{}
+	productAsset , err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
+	err = json.Unmarshal(result.Value, &product)
+	if err != nil {
+		return shim.Error("get tx info error" + err.Error())
+	}
+
 	// 更新产品交易列表信息
 	var productInfo = module.ProductInfo{}
 	common.SetStructByJsonName(&productInfo, param)
